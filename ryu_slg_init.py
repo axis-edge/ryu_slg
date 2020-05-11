@@ -193,7 +193,7 @@ class RyuSlgInit(app_manager.RyuApp):
             )
             flow['actions'].append({"type":"OUTPUT", "port": 2})
             print(flow)
-            mod_flow_entry(datapath, flow, ofproto.OFPFC_ADD)
+            #mod_flow_entry(datapath, flow, ofproto.OFPFC_ADD)
         
         # in_port: 2 DECAP
         flow = {'priority': 10, 'table_id':0}
@@ -202,5 +202,5 @@ class RyuSlgInit(app_manager.RyuApp):
         flow['actions'].append({"type": "SET_FIELD", "field": "eth_dst", "value": slg[slg_id].interface[1].gateway.mac_address})
         flow['actions'].append({"type":"OUTPUT", "port": 1})
         print(flow)
-        mod_flow_entry(datapath, flow, ofproto.OFPFC_ADD)
+        #mod_flow_entry(datapath, flow, ofproto.OFPFC_ADD)
         
