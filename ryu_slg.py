@@ -248,7 +248,7 @@ class StatsController(ControllerBase):
     def get_dpids(self, req, **_kwargs):
         dps = list(self.dpset.dps.keys())
         body = json.dumps(dps)
-        return Response(content_type='application/json', body=body)
+        return Response(content_type='application/json', body=body, charset="utf-8")
 
     def get_desc_stats(self, req, dpid, **_kwargs):
 
@@ -271,10 +271,10 @@ class StatsController(ControllerBase):
             return Response(status=501)
 
         body = json.dumps(desc)
-        return Response(content_type='application/json', body=body)
+        return Response(content_type='application/json', body=body, charset="utf-8")
 
     def get_flow_stats(self, req, dpid, **_kwargs):
-
+        """
         if req.body == '':
             flow = {}
 
@@ -286,6 +286,8 @@ class StatsController(ControllerBase):
             except SyntaxError:
                 LOG.debug('invalid syntax %s', req.body)
                 return Response(status=400)
+        """
+        flow = {}
 
         if type(dpid) == str and not dpid.isdigit():
             LOG.debug('invalid dpid %s', dpid)
@@ -307,7 +309,7 @@ class StatsController(ControllerBase):
             return Response(status=501)
 
         body = json.dumps(flows)
-        return Response(content_type='application/json', body=body)
+        return Response(content_type='application/json', body=body, charset="utf-8")
 
     def get_aggregate_flow_stats(self, req, dpid, **_kwargs):
 
@@ -342,7 +344,7 @@ class StatsController(ControllerBase):
             return Response(status=501)
 
         body = json.dumps(flows)
-        return Response(content_type='application/json', body=body)
+        return Response(content_type='application/json', body=body, charset="utf-8")
 
     def get_table_stats(self, req, dpid, **_kwargs):
 
@@ -366,7 +368,7 @@ class StatsController(ControllerBase):
             return Response(status=501)
 
         body = json.dumps(ports)
-        return Response(content_type='application/json', body=body)
+        return Response(content_type='application/json', body=body, charset="utf-8")
 
     def get_table_features(self, req, dpid, **_kwargs):
 
@@ -390,7 +392,7 @@ class StatsController(ControllerBase):
             return Response(status=501)
 
         body = json.dumps(ports)
-        return Response(content_type='application/json', body=body)
+        return Response(content_type='application/json', body=body, charset="utf-8")
 
     def get_port_stats(self, req, dpid, **_kwargs):
 
@@ -414,7 +416,7 @@ class StatsController(ControllerBase):
             return Response(status=501)
 
         body = json.dumps(ports)
-        return Response(content_type='application/json', body=body)
+        return Response(content_type='application/json', body=body, charset="utf-8")
 
     def get_queue_stats(self, req, dpid, **_kwargs):
 
@@ -438,7 +440,7 @@ class StatsController(ControllerBase):
             return Response(status=501)
 
         body = json.dumps(queues)
-        return Response(content_type='application/json', body=body)
+        return Response(content_type='application/json', body=body, charset="utf-8")
 
     def get_queue_config(self, req, dpid, port, **_kwargs):
 
@@ -467,7 +469,7 @@ class StatsController(ControllerBase):
             return Response(status=501)
 
         body = json.dumps(queues)
-        return Response(content_type='application/json', body=body)
+        return Response(content_type='application/json', body=body, charset="utf-8")
 
     def get_meter_features(self, req, dpid, **_kwargs):
 
@@ -492,7 +494,7 @@ class StatsController(ControllerBase):
             return Response(status=501)
 
         body = json.dumps(meters)
-        return Response(content_type='application/json', body=body)
+        return Response(content_type='application/json', body=body, charset="utf-8")
 
     def get_meter_config(self, req, dpid, **_kwargs):
 
@@ -517,7 +519,7 @@ class StatsController(ControllerBase):
             return Response(status=501)
 
         body = json.dumps(meters)
-        return Response(content_type='application/json', body=body)
+        return Response(content_type='application/json', body=body, charset="utf-8")
 
     def get_meter_stats(self, req, dpid, **_kwargs):
 
@@ -542,7 +544,7 @@ class StatsController(ControllerBase):
             return Response(status=501)
 
         body = json.dumps(meters)
-        return Response(content_type='application/json', body=body)
+        return Response(content_type='application/json', body=body, charset="utf-8")
 
     def get_group_features(self, req, dpid, **_kwargs):
 
@@ -567,7 +569,7 @@ class StatsController(ControllerBase):
             return Response(status=501)
 
         body = json.dumps(groups)
-        return Response(content_type='application/json', body=body)
+        return Response(content_type='application/json', body=body, charset="utf-8")
 
     def get_group_desc(self, req, dpid, **_kwargs):
 
@@ -592,7 +594,7 @@ class StatsController(ControllerBase):
             return Response(status=501)
 
         body = json.dumps(groups)
-        return Response(content_type='application/json', body=body)
+        return Response(content_type='application/json', body=body, charset="utf-8")
 
     def get_group_stats(self, req, dpid, **_kwargs):
 
@@ -617,7 +619,7 @@ class StatsController(ControllerBase):
             return Response(status=501)
 
         body = json.dumps(groups)
-        return Response(content_type='application/json', body=body)
+        return Response(content_type='application/json', body=body, charset="utf-8")
 
     def get_port_desc(self, req, dpid, **_kwargs):
 
@@ -641,7 +643,7 @@ class StatsController(ControllerBase):
             return Response(status=501)
 
         body = json.dumps(groups)
-        return Response(content_type='application/json', body=body)
+        return Response(content_type='application/json', body=body, charset="utf-8")
 
     def mod_flow_entry(self, req, cmd, **_kwargs):
 
@@ -714,6 +716,20 @@ class StatsController(ControllerBase):
 
         return Response(status=200)
 
+
+    def add_flow(self, req, **kwargs):
+        print("add_flow")
+
+        try:
+            flow = ast.literal_eval(req.body.decode('utf-8'))
+        except SyntaxError:
+            LOG.debug('invalid syntax %s', req.body)
+            return Response(status=400)
+
+        print(flow)
+        dp = self.dpset.get(int(dpid))
+        print(dp)
+        _ofctl.mod_flow_entry(dp, flow, dp.ofproto.OFPFC_ADD)
 
     def mod_slice(self, req, cmd, **_kwargs):
 
@@ -817,7 +833,7 @@ class StatsController(ControllerBase):
                 vni = 5000 + slice_id * 10
             )
             flow['actions'].append({"type":"OUTPUT", "port": 2})
-            flow['match'] = {'in_port': 1, "dl_type": 2048, "ip_proto": 6, "ipv4_src": dst_ip, "ipv4_dst": src_ip, "udp_src": dst_port}
+            flow['match'] = {'in_port': 1, "dl_type": 2048, "ip_proto": 6, "ipv4_src": dst_ip, "ipv4_dst": src_ip, "tcp_src": dst_port}
             print(flow)
             _ofctl.mod_flow_entry(dp, flow, of_cmd)
             flow['match'] = {'in_port': 1, "dl_type": 2048, "ip_proto": 17, "ipv4_src": dst_ip, "ipv4_dst": src_ip, "udp_src": dst_port}
@@ -1166,6 +1182,11 @@ class RestStatsApi(app_manager.RyuApp):
         uri = '/slice/{cmd}'
         mapper.connect('stats', uri,
                        controller=StatsController, action='mod_slice',
+                       conditions=dict(method=['POST']))
+
+        uri = '/addflow/{dpid}'
+        mapper.connect('stats', uri,
+                       controller=StatsController, action='add_flow',
                        conditions=dict(method=['POST']))
 
 
