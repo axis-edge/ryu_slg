@@ -179,7 +179,7 @@ class SliceGateway(dict):
 
     def __repl__(self):
         return self.interface
-    
+
     def add_interface(self, index, ip_address, mac_address):
         self.interface[index] = interface(index, ip_address, mac_address)
         return
@@ -281,7 +281,7 @@ class StatsController(ControllerBase):
         else:
 
             try:
-                flow = ast.literal_eval(req.body)
+                flow = ast.literal_eval(req.body.decode('utf-8'))
 
             except SyntaxError:
                 LOG.debug('invalid syntax %s', req.body)
@@ -318,7 +318,7 @@ class StatsController(ControllerBase):
 
         else:
             try:
-                flow = ast.literal_eval(req.body)
+                flow = ast.literal_eval(req.body.decode('utf-8'))
 
             except SyntaxError:
                 LOG.debug('invalid syntax %s', req.body)
@@ -648,7 +648,7 @@ class StatsController(ControllerBase):
     def mod_flow_entry(self, req, cmd, **_kwargs):
 
         try:
-            flow = ast.literal_eval(req.body)
+            flow = ast.literal_eval(req.body.decode('utf-8'))
 
         except SyntaxError:
             LOG.debug('invalid syntax %s', req.body)
@@ -734,7 +734,7 @@ class StatsController(ControllerBase):
     def mod_slice(self, req, cmd, **_kwargs):
 
         print("mod_slice")
-        
+
         try:
             slice = ast.literal_eval(req.body.decode('utf-8'))
 
@@ -770,7 +770,7 @@ class StatsController(ControllerBase):
         if _ofctl is None:
             LOG.debug('Unsupported OF protocol')
             return Response(status=501)
-        
+
         if cmd == 'add':
             of_cmd = dp.ofproto.OFPFC_ADD
         elif cmd == 'delete':
@@ -802,7 +802,7 @@ class StatsController(ControllerBase):
         _ofctl.mod_flow_entry(dp, flow, of_cmd)
 
 
-        
+
         ## SLG2: MEC gateway
         if slice_id == 1 or slice_id == 2:
             dpid = 2
@@ -812,7 +812,7 @@ class StatsController(ControllerBase):
             if _ofctl is None:
                 LOG.debug('Unsupported OF protocol')
                 return Response(status=501)
-            
+
             if cmd == 'add':
                 of_cmd = dp.ofproto.OFPFC_ADD
             elif cmd == 'delete':
@@ -822,7 +822,7 @@ class StatsController(ControllerBase):
                 return Response(status=404)
             else:
                 return Response(status=404)
-            
+
             flow = {'priority': 100, 'table_id':0}
             flow['actions'] = make_vxlan_encap_action(
                 eth_src = slg[1].interface[2].mac_address,
@@ -851,7 +851,7 @@ class StatsController(ControllerBase):
             if _ofctl is None:
                 LOG.debug('Unsupported OF protocol')
                 return Response(status=501)
-            
+
             if cmd == 'add':
                 of_cmd = dp.ofproto.OFPFC_ADD
             elif cmd == 'delete':
@@ -861,7 +861,7 @@ class StatsController(ControllerBase):
                 return Response(status=404)
             else:
                 return Response(status=404)
-            
+
             flow = {'priority': 100, 'table_id':0}
             flow['actions'] = make_vxlan_encap_action(
                 eth_src = slg[2].interface[2].mac_address,
@@ -883,11 +883,11 @@ class StatsController(ControllerBase):
             _ofctl.mod_flow_entry(dp, flow, of_cmd)
 
         return Response(status=200)
-    
+
     def mod_meter_entry(self, req, cmd, **_kwargs):
 
         try:
-            flow = ast.literal_eval(req.body)
+            flow = ast.literal_eval(req.body.decode('utf-8'))
 
         except SyntaxError:
             LOG.debug('invalid syntax %s', req.body)
@@ -929,7 +929,7 @@ class StatsController(ControllerBase):
     def mod_group_entry(self, req, cmd, **_kwargs):
 
         try:
-            group = ast.literal_eval(req.body)
+            group = ast.literal_eval(req.body.decode('utf-8'))
 
         except SyntaxError:
             LOG.debug('invalid syntax %s', req.body)
@@ -971,7 +971,7 @@ class StatsController(ControllerBase):
     def mod_port_behavior(self, req, cmd, **_kwargs):
 
         try:
-            port_config = ast.literal_eval(req.body)
+            port_config = ast.literal_eval(req.body.decode('utf-8'))
 
         except SyntaxError:
             LOG.debug('invalid syntax %s', req.body)
@@ -1028,7 +1028,7 @@ class StatsController(ControllerBase):
             return Response(status=404)
 
         try:
-            exp = ast.literal_eval(req.body)
+            exp = ast.literal_eval(req.body.decode('utf-8'))
 
         except SyntaxError:
             LOG.debug('invalid syntax %s', req.body)
