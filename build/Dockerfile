@@ -6,5 +6,5 @@ RUN git clone https://github.com/lagopus/ryu-lagopus-ext && \
 COPY . .
 RUN pip3 install -r requirements.txt
 
-ENTRYPOINT ["ryu-manager", "ryu_slg.py", "ryu_slg_init.py"]
+ENTRYPOINT ["ryu-manager", "--enable-debugger", "ryu_slg.py", "ryu_slg_init.py"]
 
